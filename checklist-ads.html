@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist de Especificações de Anúncios</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .notion-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .notion-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+        
+        .notion-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .platform-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .meta-gradient {
+            background: linear-gradient(135deg, #3b5998, #8b5cf6);
+        }
+        
+        .google-gradient {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+        }
+        
+        .spec-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .checkbox-custom {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .checkbox-custom:checked {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        .checkbox-custom:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-bottom: 24px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto p-6">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                <i class="fas fa-clipboard-check mr-3 text-blue-500"></i>
+                Checklist de Especificações de Anúncios
+            </h1>
+            <p class="text-gray-600">Selecione a plataforma e o tipo de criativo para ver as especificações detalhadas</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 33%;"></div>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div id="breadcrumb" class="breadcrumb">
+            <div class="breadcrumb-item">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </div>
+            <div id="breadcrumbPlatform" class="breadcrumb-item" style="display: none;">
+                <i class="fas fa-chevron-right"></i>
+                <span id="platformName"></span>
+            </div>
+            <div id="breadcrumbType" class="breadcrumb-item" style="display: none;">
+                <i class="fas fa-chevron-right"></i>
+                <span id="typeName"></span>
+            </div>
+        </div>
+
+        <!-- Step 1: Platform Selection -->
+        <div id="platformSelection" class="fade-in">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+                <i class="fas fa-rocket mr-2 text-blue-500"></i>
+                Escolha a Plataforma
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="notion-card p-6 cursor-pointer" onclick="selectPlatform('meta')">
+                    <div class="flex items-center mb-4">
+                        <div class="platform-icon meta-gradient mr-4">
+                            <i class="fab fa-facebook-f"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Meta Ads</h3>
+                            <p class="text-gray-600">Facebook & Instagram</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <p>• Imagem única</p>
+                        <p>• Vídeo</p>
+                        <p>• Carrossel</p>
+                    </div>
+                </div>
+
+                <div class="notion-card p-6 cursor-pointer" onclick="selectPlatform('google')">
+                    <div class="flex items-center mb-4">
+                        <div class="platform-icon google-gradient mr-4">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Google Ads</h3>
+                            <p class="text-gray-600">Todas as campanhas Google</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <p>• Search, Display, PMAX</p>
+                        <p>• YouTube, Shopping</p>
+                        <p>• Geração de Demanda, App</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Type Selection -->
+        <div id="typeSelection" class="fade-in" style="display: none;">
+            <div class="flex items-center mb-6">
+                <button onclick="goBackToPlatform()" class="mr-4 p-2 rounded-md hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-arrow-left text-gray-600"></i>
+                </button>
+                <h2 class="text-2xl font-semibold text-gray-800">
+                    <i class="fas fa-palette mr-2 text-blue-500"></i>
+                    Escolha o Tipo de Criativo
+                </h2>
+            </div>
+            <div id="typeOptions" class="grid gap-4"></div>
+        </div>
+
+        <!-- Step 3: Specifications -->
+        <div id="specifications" class="fade-in" style="display: none;">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <button onclick="goBackToType()" class="mr-4 p-2 rounded-md hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-arrow-left text-gray-600"></i>
+                    </button>
+                    <h2 class="text-2xl font-semibold text-gray-800">
+                        <i class="fas fa-list-check mr-2 text-blue-500"></i>
+                        Especificações
+                    </h2>
+                </div>
+                <button onclick="resetAll()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors">
+                    <i class="fas fa-refresh mr-2"></i>
+                    Recomeçar
+                </button>
+            </div>
+            <div id="specContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPlatform = '';
+        let selectedType = '';
+
+        const platformData = {
+            meta: {
+                name: 'Meta Ads',
+                types: {
+                    'imagem': {
+                        name: 'Imagem Única',
+                        icon: 'fas fa-image',
+                        specs: [
+                            { name: 'Quadrado (1:1)', details: '1080x1080 - máx 30mb - JPG, PNG' },
+                            { name: 'Vertical (9:16)', details: '1080x1920 - máx 30mb - JPG, PNG' },
+                            { name: 'Horizontal (1.91:1)', details: '1200x628 - máx 30mb - JPG, PNG' }
+                        ]
+                    },
+                    'video': {
+                        name: 'Vídeo',
+                        icon: 'fas fa-video',
+                        specs: [
+                            { name: 'Quadrado (1:1)', details: '1080x1080 - máx 30mb - MP4, MOV' },
+                            { name: 'Vertical (9:16) - FOCO', details: '1080x1920 - máx 30mb - MP4, MOV', highlight: true },
+                            { name: 'Horizontal (1.91:1)', details: '1200x628 - máx 30mb - MP4, MOV' }
+                        ]
+                    },
+                    'carrossel': {
+                        name: 'Carrossel',
+                        icon: 'fas fa-images',
+                        specs: [
+                            { name: 'Quadrado (1:1)', details: '1080x1080 - máx 30mb - JPG, PNG' },
+                            { name: 'Vertical (9:16)', details: '1080x1920 - máx 30mb - JPG, PNG' },
+                            { name: 'Horizontal (1.91:1)', details: '1200x628 - máx 30mb - JPG, PNG', note: 'NÃO DISPONÍVEL' }
+                        ]
+                    }
+                }
+            },
+            google: {
+                name: 'Google Ads',
+                types: {
+                    'search': {
+                        name: 'Search',
+                        icon: 'fas fa-search',
+                        specs: [
+                            { name: 'URL final (1)', details: 'Página de destino' },
+                            { name: 'Títulos (15)', details: 'máx 30 caracteres cada' },
+                            { name: 'Descrições (4)', details: 'máx 90 caracteres cada' },
+                            { name: 'Nome da Empresa (1)', details: 'máx 25 caracteres' },
+                            { name: 'Logotipo (1)', details: '1080x1080 (1:1)' },
+                            { name: 'Imagens (20) - Opcional', details: '1080x1080 (1:1) e 1200x628 (1,91:1)' }
+                        ]
+                    },
+                    'display': {
+                        name: 'Display',
+                        icon: 'fas fa-desktop',
+                        specs: [
+                            { name: 'URL final (1)', details: 'Página de destino' },
+                            { name: 'Nome da Empresa (1)', details: 'máx 25 caracteres' },
+                            { name: 'Logotipo (5)', details: '1080x1080 (1:1)' },
+                            { name: 'Vídeos no YouTube (5) - Opcional', details: 'Entre 1:1 e 16:9' },
+                            { name: 'Títulos (5)', details: 'máx 30 caracteres cada' },
+                            { name: 'Título longo (1)', details: 'máx 90 caracteres' },
+                            { name: 'Descrições (4)', details: 'máx 90 caracteres cada' }
+                        ]
+                    },
+                    'pmax': {
+                        name: 'Performance Max',
+                        icon: 'fas fa-rocket',
+                        specs: [
+                            { name: 'URL final (1)', details: 'Página de destino' },
+                            { name: 'Títulos (15)', details: 'máx 30 caracteres cada' },
+                            { name: 'Títulos longos (5)', details: 'máx 90 caracteres cada' },
+                            { name: 'Descrições (5)', details: 'máx 90 caracteres cada' },
+                            { name: 'Imagens (20)', details: '1080x1080 (1:1) e 1200x628 (1,91:1)' },
+                            { name: 'Logotipo (1)', details: '1080x1080 (1:1)' },
+                            { name: 'Vídeos (5) - Opcional', details: 'YouTube ou mídia própria - Entre 1:1 e 16:9' },
+                            { name: 'CTA (1)', details: 'Saiba mais, Solicitar cotação, Inscreva-se agora, Inscreva-se, Contato, Inscrever-se, Download, Reservar agora, Comprar agora' },
+                            { name: 'Nome da Empresa (1)', details: 'máx 25 caracteres' }
+                        ]
+                    },
+                    'demanda': {
+                        name: 'Geração de Demanda',
+                        icon: 'fas fa-chart-line',
+                        specs: [
+                            { name: 'URL final (1)', details: 'Página de destino' },
+                            { name: 'Vídeos (5)', details: 'YouTube ou mídia própria - Entre 1:1 e 16:9' },
+                            { name: 'Logotipo (1)', details: '1080x1080 (1:1)' },
+                            { name: 'Títulos (5)', details: 'máx 40 caracteres cada' },
+                            { name: 'Títulos longos (5)', details: 'máx 90 caracteres cada' },
+                            { name: 'Descrições (5)', details: 'máx 90 caracteres cada' },
+                            { name: 'CTA (1)', details: 'Saiba mais, Solicitar cotação, Inscreva-se agora, Inscreva-se, Contato, Inscrever-se, Download, Reservar agora, Comprar agora, Compre já, Entre em contato, Doe agora, Peça agora, Jogue agora, Veja mais, Comece agora, Visitar o site, Assista já' },
+                            { name: 'Nome da Empresa (1)', details: 'máx 25 caracteres' }
+                        ]
+                    },
+                    'youtube': {
+                        name: 'YouTube',
+                        icon: 'fab fa-youtube',
+                        specs: [
+                            { name: 'URL final (1)', details: 'Página de destino' },
+                            { name: 'Vídeos (5)', details: 'YouTube ou mídia própria - Entre 1:1 e 16:9' },
+                            { name: 'Logotipo (1)', details: '1080x1080 (1:1)' },
+                            { name: 'Títulos (5)', details: 'máx 40 caracteres cada' },
+                            { name: 'Títulos longos (5)', details: 'máx 90 caracteres cada' },
+                            { name: 'Descrições (5)', details: 'máx 90 caracteres cada' },
+                            { name: 'CTA (1)', details: 'Saiba mais, Solicitar cotação, Inscreva-se agora, Inscreva-se, Contato, Inscrever-se, Download, Reservar agora, Comprar agora, Compre já, Entre em contato, Doe agora, Peça agora, Jogue agora, Veja mais, Comece agora, Visitar o site, Assista já' },
+                            { name: 'Nome da Empresa (1)', details: 'máx 25 caracteres' }
+                        ]
+                    },
+                    'shopping': {
+                        name: 'Shopping',
+                        icon: 'fas fa-shopping-cart',
+                        specs: [
+                            { name: 'Merchant Center', details: 'Conta vinculada ao Google Ads' },
+                            { name: 'Lista de Produtos', details: 'Produtos para veiculação' }
+                        ]
+                    },
+                    'app': {
+                        name: 'App',
+                        icon: 'fas fa-mobile-alt',
+                        specs: [
+                            { name: 'Títulos (5)', details: 'máx 40 caracteres cada' },
+                            { name: 'Descrições (5)', details: 'máx 90 caracteres cada' },
+                            { name: 'Imagens (20)', details: '1080x1080 (1:1) e 1200x628 (1,91:1)' },
+                            { name: 'Vídeos (5)', details: 'YouTube ou mídia própria - Entre 1:1 e 16:9' },
+                            { name: 'HTML5 Assets (20)', details: 'ZIP, máx 600KB' }
+                        ]
+                    }
+                }
+            }
+        };
+
+        function selectPlatform(platform) {
+            selectedPlatform = platform;
+            document.getElementById('platformSelection').style.display = 'none';
+            document.getElementById('typeSelection').style.display = 'block';
+            document.getElementById('breadcrumbPlatform').style.display = 'flex';
+            document.getElementById('platformName').textContent = platformData[platform].name;
+            updateProgress(66);
+            
+            const typeOptionsContainer = document.getElementById('typeOptions');
+            typeOptionsContainer.innerHTML = '';
+            
+            const types = platformData[platform].types;
+            Object.keys(types).forEach(typeKey => {
+                const type = types[typeKey];
+                const typeCard = document.createElement('div');
+                typeCard.className = 'notion-card p-4 cursor-pointer';
+                typeCard.onclick = () => selectType(typeKey);
+                
+                typeCard.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="${type.icon} text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">${type.name}</h3>
+                            <p class="text-sm text-gray-600">${type.specs.length} especificações</p>
+                        </div>
+                        <i class="fas fa-chevron-right ml-auto text-gray-400"></i>
+                    </div>
+                `;
+                
+                typeOptionsContainer.appendChild(typeCard);
+            });
+        }
+
+        function selectType(type) {
+            selectedType = type;
+            document.getElementById('typeSelection').style.display = 'none';
+            document.getElementById('specifications').style.display = 'block';
+            document.getElementById('breadcrumbType').style.display = 'flex';
+            document.getElementById('typeName').textContent = platformData[selectedPlatform].types[type].name;
+            updateProgress(100);
+            
+            renderSpecifications();
+        }
+
+        function renderSpecifications() {
+            const specContent = document.getElementById('specContent');
+            const typeData = platformData[selectedPlatform].types[selectedType];
+            
+            let html = `
+                <div class="bg-white rounded-lg p-6 border border-gray-200 mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="${typeData.icon} text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">${platformData[selectedPlatform].name}</h3>
+                            <p class="text-gray-600">${typeData.name}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+            `;
+            
+            typeData.specs.forEach((spec, index) => {
+                const isHighlight = spec.highlight;
+                const isUnavailable = spec.note === 'NÃO DISPONÍVEL';
+                
+                html += `
+                    <div class="spec-item ${isHighlight ? 'bg-blue-50 border-blue-200' : ''} ${isUnavailable ? 'bg-red-50 border-red-200 opacity-60' : ''}">
+                        <div class="flex items-start">
+                            <input type="checkbox" class="checkbox-custom mt-1 mr-3" id="spec-${index}" ${isUnavailable ? 'disabled' : ''}>
+                            <div class="flex-1">
+                                <label for="spec-${index}" class="font-medium text-gray-900 cursor-pointer ${isUnavailable ? 'line-through' : ''}">
+                                    ${spec.name}
+                                    ${isHighlight ? '<span class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">FOCO</span>' : ''}
+                                    ${isUnavailable ? '<span class="ml-2 px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">NÃO DISPONÍVEL</span>' : ''}
+                                </label>
+                                <p class="text-sm text-gray-600 mt-1">${spec.details}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                    <i class="fas fa-check-circle text-green-600 text-2xl mb-2"></i>
+                    <h4 class="font-semibold text-green-800 mb-1">Checklist Pronto!</h4>
+                    <p class="text-green-700 text-sm">Marque os itens conforme você os prepara para garantir que nada seja esquecido.</p>
+                </div>
+            `;
+            
+            specContent.innerHTML = html;
+        }
+
+        function goBackToPlatform() {
+            selectedPlatform = '';
+            document.getElementById('typeSelection').style.display = 'none';
+            document.getElementById('platformSelection').style.display = 'block';
+            document.getElementById('breadcrumbPlatform').style.display = 'none';
+            updateProgress(33);
+        }
+
+        function goBackToType() {
+            selectedType = '';
+            document.getElementById('specifications').style.display = 'none';
+            document.getElementById('typeSelection').style.display = 'block';
+            document.getElementById('breadcrumbType').style.display = 'none';
+            updateProgress(66);
+        }
+
+        function resetAll() {
+            selectedPlatform = '';
+            selectedType = '';
+            document.getElementById('specifications').style.display = 'none';
+            document.getElementById('typeSelection').style.display = 'none';
+            document.getElementById('platformSelection').style.display = 'block';
+            document.getElementById('breadcrumbPlatform').style.display = 'none';
+            document.getElementById('breadcrumbType').style.display = 'none';
+            updateProgress(33);
+        }
+
+        function updateProgress(width) {
+            document.getElementById('progressFill').style.width = width + '%';
+        }
+
+        // Add click event listeners for cards
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.notion-card')) {
+                const cards = document.querySelectorAll('.notion-card');
+                cards.forEach(card => card.classList.remove('selected'));
+                e.target.closest('.notion-card').classList.add('selected');
+            }
+        });
+    </script>
+</body>
+</html>
