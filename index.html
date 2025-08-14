@@ -10,119 +10,29 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .notion-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-        
-        .notion-card:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-        }
-        
-        .notion-card.selected {
-            border-color: #3b82f6;
-            background: #eff6ff;
-        }
-        
-        .platform-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-        }
-        
-        .meta-gradient {
-            background: linear-gradient(135deg, #3b5998, #8b5cf6);
-        }
-        
-        .google-gradient {
-            background: linear-gradient(135deg, #4285f4, #34a853);
-        }
-        
-        .spec-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 8px;
-        }
-        
-        .checkbox-custom {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #cbd5e1;
-            border-radius: 4px;
-            background: white;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .checkbox-custom:checked {
-            background: #3b82f6;
-            border-color: #3b82f6;
-        }
-        
-        .checkbox-custom:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 24px;
-            color: #64748b;
-            font-size: 14px;
-        }
-        
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #e2e8f0;
-            border-radius: 2px;
-            margin-bottom: 24px;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: #3b82f6;
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .notion-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; transition: all 0.2s ease; }
+        .notion-card:hover { border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
+        .notion-card.selected { border-color: #3b82f6; background: #eff6ff; }
+        .platform-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; }
+        .meta-gradient { background: linear-gradient(135deg, #3b5998, #8b5cf6); }
+        .google-gradient { background: linear-gradient(135deg, #4285f4, #34a853); }
+        .spec-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 8px; }
+        .checkbox-custom { appearance: none; width: 20px; height: 20px; border: 2px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; position: relative; }
+        .checkbox-custom:checked { background: #3b82f6; border-color: #3b82f6; }
+        .checkbox-custom:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 14px; font-weight: bold; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; color: #64748b; font-size: 14px; }
+        .breadcrumb-item { display: flex; align-items: center; gap: 8px; }
+        .progress-bar { width: 100%; height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 24px; }
+        .progress-fill { height: 100%; background: #3b82f6; border-radius: 2px; transition: width 0.3s ease; }
+        .section-title { display:flex; align-items:center; gap:8px; font-weight:600; color:#0f172a; margin-bottom:8px; }
+        .pill { font-size: 12px; padding: 2px 8px; border-radius: 9999px; background:#e2e8f0; color:#334155; }
+        .group-wrap { background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-top:16px; }
+        .group-grid { display:grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap:8px; }
+        @media (min-width: 640px){ .group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (min-width: 1024px){ .group-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -451,6 +361,11 @@
                 `;
             });
             
+            // --- NOVO BLOCO: Campos de conteúdo para Meta (Imagem, Vídeo, Carrossel) ---
+            if (selectedPlatform === 'meta' && ['imagem','video','carrossel'].includes(selectedType)) {
+                html += renderContentFields();
+            }
+            
             html += `
                     </div>
                 </div>
@@ -463,6 +378,55 @@
             `;
             
             specContent.innerHTML = html;
+        }
+
+        // Gera grupos de 5 checkboxes para Títulos, Descrições e Textos
+        function renderContentFields() {
+            const groups = [
+                { key: 'titulos', label: 'Títulos', count: 5, icon: 'fas fa-heading' },
+                { key: 'descricoes', label: 'Descrições', count: 5, icon: 'fas fa-align-left' },
+                { key: 'textos', label: 'Textos', count: 5, icon: 'fas fa-pen' }
+            ];
+
+            let block = `
+                <div class="group-wrap">
+                    <div class="section-title">
+                        <i class="fas fa-font text-blue-600"></i>
+                        <span>Conteúdos do Anúncio</span>
+                        <span class="pill">5 de cada</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Crie e marque até completar o volume recomendado: 5 títulos, 5 descrições e 5 textos.</p>
+            `;
+
+            groups.forEach(group => {
+                block += `
+                    <div class="mb-3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="${group.icon} text-gray-600"></i>
+                            <h4 class="font-medium text-gray-900">${group.label} <span class="pill">${group.count}</span></h4>
+                        </div>
+                        <div class="group-grid">
+                `;
+                for (let i = 1; i <= group.count; i++) {
+                    const id = `${group.key}-${i}`;
+                    block += `
+                        <label class="spec-item flex items-start gap-3" for="${id}">
+                            <input type="checkbox" class="checkbox-custom mt-1" id="${id}">
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900">${group.label} ${i}</div>
+                                <input type="text" placeholder="Escreva aqui..." class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"/>
+                            </div>
+                        </label>
+                    `;
+                }
+                block += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            block += `</div>`;
+            return block;
         }
 
         function goBackToPlatform() {
@@ -492,11 +456,9 @@
             updateProgress(33);
         }
 
-        function updateProgress(width) {
-            document.getElementById('progressFill').style.width = width + '%';
-        }
+        function updateProgress(width) { document.getElementById('progressFill').style.width = width + '%'; }
 
-        // Add click event listeners for cards
+        // Seleção visual dos cards
         document.addEventListener('click', function(e) {
             if (e.target.closest('.notion-card')) {
                 const cards = document.querySelectorAll('.notion-card');
@@ -507,4 +469,3 @@
     </script>
 </body>
 </html>
-
